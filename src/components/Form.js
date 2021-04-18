@@ -125,7 +125,7 @@ export default function Form() {
         <br />
 
         <div className="toppingsChecklist">
-          <p>Select Toppings</p>
+          <h3>Select Toppings</h3>
 
           <label htmlFor="pepperoni">
             <input
