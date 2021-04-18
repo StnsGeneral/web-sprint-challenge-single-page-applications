@@ -17,7 +17,9 @@ describe('Forms App', () => {
   const mushroomCheckbox = () => cy.get('input[name="mushrooms"]');
   const submitButton = () => cy.get('#submit');
   const sizeInput = () => cy.get('select');
-  const nameInput = () => cy.get('input[name="name"]');
+  const firstNameInput = () => cy.get('input[name="first_name"]');
+  const lastNameInput = () => cy.get('input[name="last_name"]');
+  const emailInput = () => cy.get('input[name="email"]');
 
   it('Proper elements exist on the page', () => {
     specialInstructionInput().should('exist');
@@ -28,7 +30,9 @@ describe('Forms App', () => {
     mushroomCheckbox().should('exist');
     submitButton().should('exist');
     sizeInput().should('exist');
-    nameInput().should('exist');
+    firstNameInput().should('exist');
+    lastNameInput().should('exist');
+    emailInput().should('exist');
   });
 
   it('Can select multiple toppings', () => {
@@ -39,7 +43,9 @@ describe('Forms App', () => {
   });
 
   it('Can submit an order', () => {
-    nameInput().type('Tristan Miller');
+    firstNameInput().type('Tristan');
+    lastNameInput().type('Miller');
+    emailInput().type('tristan@miller.com');
     sizeInput().select('Large');
     pepperoniCheckbox().check();
     sausageCheckbox().check();
