@@ -1,112 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import * as yup from 'yup';
-import formSchema from '../validation/formSchema';
+import React from 'react';
+// import axios from 'axios';
+// import * as yup from 'yup';
+// import formSchema from '../validation/formSchema';
 
-const initialErrors = {
-  name: '',
-  size: '',
-  pepperoni: '',
-  sausage: '',
-  extraCheese: '',
-  bacon: '',
-  mushrooms: '',
-  special: '',
-};
-const initialFormValues = {
-  name: '',
-  size: '',
-  pepperoni: false,
-  sausage: false,
-  extraCheese: false,
-  bacon: false,
-  mushrooms: false,
-  special: '',
-};
+export default function Form(props) {
+  const { values, submit, change, disabled, errors } = props;
 
-export default function Form() {
-  const [formValues, setFormValues] = useState(initialFormValues);
-  const [errors, setErrors] = useState(initialErrors);
-  const [buttonDisabled, setButtonDisabled] = useState(true);
-  const [post, setPost] = useState([]);
-
-  const inputChange = (evt) => {
-    evt.persist();
-    const newFormValues = {
-      ...formValues,
-      [evt.target.name]:
-        evt.target.type === 'checked' ? evt.target.checked : evt.target.value,
-    };
-    validateChange(evt);
-    setFormValues(newFormValues);
+  const onChange = (evt) => {
+    const { name, value, type, checked } = evt.target;
+    const valueToUse = type === 'checkbox' ? checked : value;
+    change(name, valueToUse);
   };
 
-  useEffect(() => {
-    formSchema.isValid(formValues).then((valid) => {
-      setButtonDisabled(!valid);
-    });
-  }, [formValues]);
-
-  const validateChange = (evt) => {
-    yup
-      .reach(formSchema, evt.target.name)
-      .validate(evt.target.value)
-      .then((valid) => {
-        setErrors({
-          ...errors,
-          [evt.target.name]: '',
-        });
-      })
-      .catch((err) => {
-        setErrors({
-          ...errors,
-          [evt.target.name]: err.errors[0],
-        });
-      });
-  };
-
-  const submitChange = (evt) => {
+  const onSubmit = (evt) => {
     evt.preventDefault();
-    axios
-      .post('https://reqres.in/api/users', formValues)
-      .then((res) => {
-        setPost(res.data);
-        console.log('success', post);
-        console.log(res.data.size);
-        setFormValues({
-          name: '',
-          size: res.data.size,
-          pepperoni: false,
-          ham: false,
-          bacon: false,
-          pineapple: false,
-          special: '',
-        });
-      })
-      .catch((err) => console.log(err.response));
+    submit();
   };
 
   return (
     <div>
-      <form onSubmit={submitChange}>
+      <form className="form container" onSubmit={onSubmit}>
         <h1 id="order">Place an Order!</h1>
         <label htmlFor="name">
           <h2>What is your name?</h2>
           <br />
           <input
             type="text"
-            name="name"
-            id="nameInput"
-            placeholder="Name"
-            value={formValues.name}
-            onChange={inputChange}
+            name="first_name"
+            id="firstNameInput"
+            placeholder="First Name"
+            value={values.first_name}
+            onChange={onChange}
+          />
+          <input
+            type="text"
+            name="last_name"
+            id="lastNameInput"
+            placeholder="Last Name"
+            value={values.last_name}
+            onChange={onChange}
+          />
+        </label>
+
+        <label htmlFor="email">
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Enter an email address"
+            value={values.email}
+            onChange={onChange}
           />
         </label>
 
         <label htmlFor="size">
           <h2>What size pizza would you like?</h2>
           <br />
-          <select name="size" id="sizeInput" onChange={inputChange}>
+          <select name="size" id="sizeInput" onChange={onChange}>
             <option name="default" value={null}></option>
             <option name="Small" value="Sm">
               Small
@@ -132,8 +82,8 @@ export default function Form() {
               type="checkbox"
               name="pepperoni"
               id="pepperoniCheckBox"
-              checked={formValues.pepperoni}
-              onChange={inputChange}
+              checked={values.pepperoni}
+              onChange={onChange}
             />
             Pepperoni
           </label>
@@ -144,8 +94,8 @@ export default function Form() {
               type="checkbox"
               name="sausage"
               id="sausageCheckBox"
-              checked={formValues.sausage}
-              onChange={inputChange}
+              checked={values.sausage}
+              onChange={onChange}
             />
             Sausage
           </label>
@@ -156,8 +106,8 @@ export default function Form() {
               type="checkbox"
               name="extraCheese"
               id="extraCheeseCheckBox"
-              checked={formValues.extraCheese}
-              onChange={inputChange}
+              checked={values.extraCheese}
+              onChange={onChange}
             />
             Extra Cheese
           </label>
@@ -168,8 +118,8 @@ export default function Form() {
               type="checkbox"
               name="bacon"
               id="baconCheckBox"
-              checked={formValues.bacon}
-              onChange={inputChange}
+              checked={values.bacon}
+              onChange={onChange}
             />
             Bacon
           </label>
@@ -180,8 +130,8 @@ export default function Form() {
               type="checkbox"
               name="mushrooms"
               id="mushroomsCheckBox"
-              checked={formValues.mushrooms}
-              onChange={inputChange}
+              checked={values.mushrooms}
+              onChange={onChange}
             />
             Mushrooms
           </label>
@@ -195,15 +145,22 @@ export default function Form() {
             name="special"
             id="special"
             placeholder="Type instructions here..."
-            value={formValues.special}
-            onChange={inputChange}
+            value={values.special}
+            onChange={onChange}
           />
         </label>
         <br />
-        <button id="submit" disabled={buttonDisabled}>
+        <button id="submit" disabled={disabled}>
           Submit
         </button>
-        <pre>{JSON.stringify(post, null, 2)}</pre>
+        <div className="errors">
+          <div>{errors.name}</div>
+          <div>{errors.size}</div>
+          <div>{errors.email}</div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
       </form>
     </div>
   );
