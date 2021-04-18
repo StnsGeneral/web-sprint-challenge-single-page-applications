@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Switch, Route } from 'react-router-dom';
+import { Link, Switch, Route, useHistory } from 'react-router-dom';
 import Home from './components/Home';
 import Form from './components/Form';
 import * as yup from 'yup';
 import schema from './validation/formSchema';
 import axios from 'axios';
+import Order from './components/Orders';
 
 const initialFormErrors = {
-  name: '',
+  first_name: '',
+  last_name: '',
   email: '',
   size: '',
-  special: '',
 };
 
 const initialFormValues = {
@@ -34,6 +35,7 @@ const App = () => {
   const [formErrors, setFormErrors] = useState(initialFormErrors);
   const [disabled, setDisabled] = useState(initialDisabled);
   const [orders, setOrders] = useState(initialOrders);
+  const history = useHistory();
 
   const formSubmit = () => {
     const newOrder = {
@@ -41,14 +43,17 @@ const App = () => {
       last_name: formValues.last_name.trim(),
       email: formValues.email.trim(),
       size: formValues.size,
-      pepperoni: formValues.pepperoni,
-      sausage: formValues.sausage,
-      extraCheese: formValues.extraCheese,
-      bacon: formValues.bacon,
-      mushrooms: formValues.mushrooms,
+      toppings: [
+        'pepperoni',
+        'sausage',
+        'extraCheese',
+        'bacon',
+        'mushrooms',
+      ].filter((topping) => formValues[topping]),
       special: formValues.special.trim(),
     };
     postNewOrder(newOrder);
+    history.push('/order-confirmation');
   };
 
   const inputChange = (name, value) => {
@@ -77,7 +82,7 @@ const App = () => {
     axios
       .post(`https://reqres.in/api/users`, newOrder)
       .then((res) => {
-        setOrders([...orders, res.data]);
+        setOrders(res.data);
         setFormValues(initialFormValues);
         console.log(setOrders);
       })
@@ -101,8 +106,8 @@ const App = () => {
           <Link to="/">
             <button className="home-button">Home</button>
           </Link>
-          <Link to="/pizza">
-            <button className="form-button">Order Here</button>
+          <Link to="/help">
+            <button className="form-button">Help</button>
           </Link>
         </div>
       </nav>
@@ -117,6 +122,9 @@ const App = () => {
             disabled={disabled}
             errors={formErrors}
           />
+        </Route>
+        <Route exact path="/order-confirmation">
+          <Order values={orders} />
         </Route>
       </Switch>
     </>

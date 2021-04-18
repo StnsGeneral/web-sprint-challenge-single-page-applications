@@ -1,7 +1,4 @@
 import React from 'react';
-// import axios from 'axios';
-// import * as yup from 'yup';
-// import formSchema from '../validation/formSchema';
 
 export default function Form(props) {
   const { values, submit, change, disabled, errors } = props;
@@ -58,13 +55,13 @@ export default function Form(props) {
           <br />
           <select name="size" id="sizeInput" onChange={onChange}>
             <option name="default" value={null}></option>
-            <option name="Small" value="Sm">
+            <option name="Small" value="Small">
               Small
             </option>
-            <option name="Medium" value="Md">
+            <option name="Medium" value="Medium">
               Medium
             </option>
-            <option name="Large" value="Lg">
+            <option name="Large" value="Large">
               Large
             </option>
             <option name="Xtra-Large" value="XL">
@@ -151,15 +148,12 @@ export default function Form(props) {
         </label>
         <br />
         <button id="submit" disabled={disabled}>
-          Submit
+          Place Order
         </button>
         <div className="errors">
           <div>{errors.name}</div>
           <div>{errors.size}</div>
           <div>{errors.email}</div>
-          <div></div>
-          <div></div>
-          <div></div>
         </div>
       </form>
     </div>
