@@ -31,8 +31,11 @@ Commit your code regularly and meaningfully. This helps both you (in case you ev
 Demonstrate your understanding of this week's concepts by answering the following free-form questions. Edit this document to include your answers after each question.
 
 1. In 1-2 sentences, explain what React's `useRouteMatch` hook is used for.
+   Getting access to the match data without actually rendering a Route. Can accept arguments that act as props for the route match.
 1. How would you explain form validation to someone who has never programmed before?
+   It's a way to ensure that the data that the user puts in, is in fact the correct data required. Something along the lines of what a factory worker would be doing, making sure the correct product is being handled and shipped to the correct area.
 1. In 1-2 sentences, define end to end testing.
+   A manner of testing that goes through the entire tech stack to make sure that each and every part of the application is working as intended.
 
 ## Instructions
 
@@ -54,9 +57,9 @@ Your finished project must include all of the following requirements:
 - [x] A name text input field
 - [x] Validation for name - name must be at least 2 characters
 - [x] A dropdown for pizza size
-- [ ] A checklist for toppings - at least 4 (hint: name each separately!)
+- [x] A checklist for toppings - at least 4 (hint: name each separately!)
 - [x] Text input for special instructions
-- [ ] An Add to Order button that submits form and returns a database record of name, size, toppings and special instructions
+- [x] An Add to Order button that submits form and returns a database record of name, size, toppings and special instructions
 
 #### Testing MVP
 
